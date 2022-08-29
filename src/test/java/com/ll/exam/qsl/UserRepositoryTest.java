@@ -69,4 +69,15 @@ class UserRepositoryTests {
 
         assertThat(cnt).isEqualTo(2);
     }
+
+    @Test
+    @DisplayName("제일 낮은 ID 회원 1명")
+    void t5() {
+        SiteUser u1 = userRepository.getQslUserOrderByIdAscOne();
+
+        assertThat(u1.getId()).isEqualTo(1L);
+        assertThat(u1.getUsername()).isEqualTo("user1");
+        assertThat(u1.getEmail()).isEqualTo("user1@test.com");
+        assertThat(u1.getPassword()).isEqualTo("{noop}1234");
+    }
 }
