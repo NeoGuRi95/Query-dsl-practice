@@ -26,7 +26,7 @@ public class SiteUser {
     @Column(unique = true)
     private String email;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @Builder.Default
     private Set<InterestKeyword> interestKeywords = new HashSet<>();
 
