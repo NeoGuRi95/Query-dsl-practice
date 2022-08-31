@@ -1,5 +1,7 @@
 package com.ll.exam.qsl.user.repository;
 
+import com.ll.exam.qsl.interestKeyword.entity.InterestKeyword;
+import com.ll.exam.qsl.interestKeyword.entity.QInterestKeyword;
 import com.ll.exam.qsl.user.entity.QSiteUser;
 import com.ll.exam.qsl.user.entity.SiteUser;
 import com.querydsl.core.types.Order;
@@ -14,9 +16,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.LongSupplier;
 
+import static com.ll.exam.qsl.interestKeyword.entity.QInterestKeyword.interestKeyword;
 import static com.ll.exam.qsl.user.entity.QSiteUser.siteUser;
 
 @RequiredArgsConstructor
@@ -103,5 +108,17 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 );
 
         return PageableExecutionUtils.getPage(users, pageable, usersCountQuery::fetchOne);
+    }
+
+    @Override
+    public List<SiteUser> searchQslByInterestKeyword(String kw) {
+        return jpaQueryFactory
+                .select(siteUser)
+                .from(siteUser)
+                .innerJoin(siteUser.interestKeywords, interestKeyword)
+                .where(
+                        interestKeyword.content.eq(kw)
+                )
+                .fetch();
     }
 }
